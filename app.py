@@ -19,14 +19,6 @@ st.header('Classify your Heart Condition as Safe or Unsafe!')
 data = pd.read_csv("./Dataset/heart.csv")
 print(data.head())
 
-# As we can see, no column names. Hence inserting column names
-
-data = pd.read_csv('NIFTY50_all.csv', sep=',', header=None)
-column_names = ['Date', 'Symbol', 'Series', 'Prev_Close', 'Open', 'High', 'Low', 'Last', 'Close', 'VWAP', 'Volume',
-                'Turnover', 'Trades', 'Deliverable Volume', '%Deliverble']
-data.columns = column_names  # setting header names
-print(data.head())
-
 
 # Data Visualization
 
@@ -41,6 +33,7 @@ df = data.sample(frac=1,random_state=32)
 X_label = df.drop(["output"],axis=1)
 y_label = df["output"]
 
+
 # Normalizing the X labels
 X1 = X_label.copy()
 X1 = (X1 - X1.mean())/X1.std() #Standardizing the X-Labels
@@ -49,6 +42,12 @@ X1 = X1.to_numpy()
 # Categorizing Y Label using One-Hot Encoding
 y1 = np.zeros((y_label.shape[0], (np.amax(y_label)+1)))
 y1[np.arange(y_label.shape[0]), y_label] = 1
+
+feature_std = []
+feature_mean = []
+for i in range(X_label.shape[1]):
+    feature_mean.append(X1[:, i].mean())
+    feature_std.append(X1[:, i].std())
 
 #Splitting the data in 3/4 ratio
 splitting_len = int(0.75 * len(df))
@@ -330,3 +329,23 @@ elif nav_choice == 'Classification':
                         )
 
     submit = st.button('Predict')
+
+    def featureset_scale(arr):
+        for i in range(X_test.shape[1]):
+            arr[i] = (arr[i] - feature_mean[i]) / feature_std[i]
+        return arr
+
+
+    if submit:
+        featureset = [age,Sex,cp,trtbps,chol,fbs,rest_ecg,thalach,exang,oldpeak,slp,ca,thal]
+        featureset = np.array(featureset)
+
+        featureset = featureset_scale(featureset)
+
+        prediction = np.argmax(model.predict(featureset),axis=1)
+        
+        load = st.progress(0)
+        for i in range(100):
+            time.sleep(0.00001)
+            load.progress(i + 1)
+        st.success(f'Heart Rate classification : {prediction}')
