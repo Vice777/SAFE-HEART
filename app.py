@@ -280,5 +280,53 @@ if nav_choice == 'Home':
 
 elif nav_choice == 'Data Analysis':
     exit()
-elif nav_choice == 'Predict':
-    exit()
+    
+elif nav_choice == 'Classification':
+    
+    st.markdown('Kindly hit ENTER after each entry')
+    
+    age = st.number_input('Age of the patient',step=1)
+
+    Sex  = st.selectbox('Sex of patient',
+                       ('Male','Female'))
+
+    cp = st.selectbox('Chest Pain type chest pain type',
+                       ('Typical Angina','Atypical Angina','Non-Anginal Pain','Asymptomatic') )
+
+    trtbps  = st.number_input('Resting blood pressure (in mm Hg)')
+
+    chol  = st.number_input('Cholestoral in mg/dl ')
+
+    fbs  = st.number_input('Is Fasting blood sugar > 120 mg/dl')
+
+    rest_ecg = st.number_input('Resting Electrocardiographic Results')
+
+    thalach  = st.selectbox('Maximum heart rate achieved',
+                            (
+                                'Normal',
+                                'Having ST-T wave abnormality (T wave inversions and/or ST elevation or depression of > 0.05 mV)',
+                                'Showing probable or definite left ventricular hypertrophy by Estes\' criteria'
+                            )
+                            )
+    exang = st.selectbox('Does exercise induced Angina',
+                        ('Yes','No'))
+
+    oldpeak = st.number_input('Enter ST depression induced by exercise relative to rest')
+
+    slp = st.selectbox('tSlope of the peak exercise ST segment',
+                        (
+                            '0: downsloping',
+                            '1: flat',
+                            '2: upsloping')
+                        )
+    
+    ca = st.selectbox('Number of major vessels',('1','2','3'))
+    thal = st.selectbox('A blood disorder called thalassemia',
+                         (
+                            'Fixed defect (no blood flow in some part of the heart)',
+                            'Normal blood flow',
+                            'Reversible defect (a blood flow is observed but it is not normal)'                           
+                         )
+                        )
+
+    submit = st.button('Predict')
