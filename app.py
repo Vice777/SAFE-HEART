@@ -185,3 +185,100 @@ print(model.accuracy_score(y_test_pk, y_pred_pickel))
 
 # Part to continue .............................
 
+nav_choice = st.sidebar.radio('Navigation', ('Home', 'Data Visualization', 'Classification'), index=0)
+
+if nav_choice == 'Home':
+    st.image("./Assets/Cross-section-human-heart.jpg", width=800)
+
+    st.success('Here, for the purpose of prediction, this app uses Linear Regression algorithm − '
+               'one of the classic supervised machine learning algorithms.')
+
+    st.warning('For the purpose of prediction, only features given in the table '
+                'below are used. Detailed description about the features is provided within the table.')
+
+    #Readme
+    st.markdown('<table>'
+                '<tr>'
+                    '<th align=\centre\><b>Features</b></th>'
+                    '<th align=\centre\><b>Description</b></th>'
+                '</tr>'
+                '<tr>'
+                    '<td>Age</td>' 
+                    '<td>Age of the patient</td>'
+                '</tr>'
+                '<tr>'
+                    '<td>Sex </td>'
+                    '<td>Sex of the patient</td>'
+                '</tr>'
+                '<tr>'
+                    '<td>exang</td>'
+                    '<td>Exercise induced angina'                        
+                    '<li>1 = yes</li>'
+                        '<li>0 = no</li>'
+                    '</td>'
+                '</tr>'
+                '<tr>'
+                    '<td>ca</td>'
+                    '<td>Number of major vessels (0-3)</td>'
+                '</tr>'
+                '<tr>'
+                    '<td>cp </td>'
+                    '<td>Chest Pain type chest pain type:'
+                        '<ul>'
+                            '<li>Value 1: Typical angina</li>'
+                            '<li>Value 2: Atypical angina</li>'
+                            '<li>Value 3: Non-anginal pain</li>'
+                            '<li>Value 4: Asymptomatic</li>'
+                        '</ul>'
+                    '</td>'
+                '</tr>'
+                '<tr>'
+                    '<td>trtbps </td>'
+                    '<td>Resting Blood Pressure (in mm Hg)</td>'
+                '</tr>'
+                '<tr>'
+                    '<td>chol </td>'
+                    '<td>Cholestoral in mg/dl fetched via BMI Sensor</td>'
+                '</tr>'
+                '<tr>'
+                    '<td>fbs </td>'
+                    '<td>'
+                        '(Fasting blood sugar > 120 mg/dl) '
+                        '<li>1 = true</li>'
+                        '<li>0 = false </li>'
+                    '</td>'
+                '</tr>'
+                '<tr>'
+                    '<td>Trades</td>'
+                    '<td>'
+                        '<ol>'
+                            '<li>Value 0: Normal</li>'
+                            '<li>Value 1: Having ST-T wave abnormality (T wave inversions and/or ST elevation or depression of > 0.05 mV)</li>'
+                            '<li>Value 2: Showing probable or definite left ventricular hypertrophy by Estes criteria</li>'
+                        '</ul>'
+                    '</td>'
+                '</tr>'
+                '<tr>'
+                    '<td>thalach </td>'
+                    '<td>Maximum Heart Rate achieved</td>'
+                '</tr>'
+                '<tr>'
+                    '<td>target </td>'
+                    '<td>Percentage of deliverable volume'
+                        '<li> 0= less chance of heart attack</li>'
+                        '<li> 1= more chance of heart attack</li>'
+                    '</td>'
+                '</tr>'
+            '</table><br>' , unsafe_allow_html=True)
+
+    st.markdown('<b><font color=\'red\'>Given below is the link of the data used for the purpose of training of the model'
+                '</font></b>'
+                '<br><a href=\'https://www.kaggle.com/datasets/rashikrahmanpritom/heart-attack-analysis-prediction-dataset\' '
+                'target=\'_blank\'>Heart Attack Analysis & Prediction Dataset</a>'
+                , unsafe_allow_html=True)
+
+
+elif nav_choice == 'Data Analysis':
+    exit()
+elif nav_choice == 'Predict':
+    exit()
