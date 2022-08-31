@@ -160,17 +160,17 @@ class MultiLayerPerceptron:
 # in the web-app developed using streamlit
 
 # below is the model training process:
-'''model = MultiLayerPerceptron(hidden_layer = 16, epoch=10000, learning_rate=0.001, verbose=True)
-model.fit(X_train, y_train)
-
-y_pred = np.argmax(model.predict(X_test), axis=1)
-y_test = np.argmax(y_test, axis=1)
-
-accuracy = model.accuracy_score(y_test, y_pred)
-print ("Accuracy: ", accuracy)
-
-with open('Bestfitmodel.pickle', 'wb') as file:
-    pickle.dump(model, file)'''
+# '''model = MultiLayerPerceptron(hidden_layer = 16, epoch=10000, learning_rate=0.001, verbose=True)
+# model.fit(X_train, y_train)
+#
+# y_pred = np.argmax(model.predict(X_test), axis=1)
+# y_test = np.argmax(y_test, axis=1)
+# 
+# accuracy = model.accuracy_score(y_test, y_pred)
+# print ("Accuracy: ", accuracy)
+#
+# with open('Bestfitmodel.pickle', 'wb') as file:
+#     pickle.dump(model, file)'''
 
 pickle_in = open('Bestfitmodel.pickle', 'rb')
 model = pickle.load(pickle_in)
@@ -270,7 +270,7 @@ if nav_choice == 'Home':
                 '</tr>'
             '</table><br>' , unsafe_allow_html=True)
 
-    st.markdown('<b><font color=\'red\'>Given below is the link of the data used for the purpose of training of the model'
+    st.markdown('<b><font color=\'yellow\'>Given below is the link of the data used for the purpose of training of the model'
                 '</font></b>'
                 '<br><a href=\'https://www.kaggle.com/datasets/rashikrahmanpritom/heart-attack-analysis-prediction-dataset\' '
                 'target=\'_blank\'>Heart Attack Analysis & Prediction Dataset</a>'
@@ -298,14 +298,14 @@ elif nav_choice == 'Classification':
 
     fbs  = st.selectbox('Is Fasting blood sugar > 120 mg/dl', options=("Yes","No"))
 
-    rest_ecg = st.number_input('Resting Electrocardiographic Results',step=1)
+    rest_ecg = st.number_input(label = 'Resting Electrocardiographic Results:' ,step=1,min_value=0, max_value=2)
 
     thalach  = st.number_input('Maximum heart rate achieved',step=1)
 
     exang = st.selectbox('Does exercise induced Angina',
                         ('Yes','No'))
 
-    oldpeak = st.number_input('Old Peak',step=1)
+    oldpeak = st.number_input('Old Peak')
 
     slp = st.selectbox('Slope of the peak exercise ST segment',
                         (
@@ -353,8 +353,7 @@ elif nav_choice == 'Classification':
                 else: featureset[i] = int(0)
             
             elif i==7:
-                st.write(featureset[i])
-                featureset[i] = int(float(featureset[i]))
+                featureset[i] = featureset[i].astype(float)
 
 
             elif i==8:
@@ -362,7 +361,7 @@ elif nav_choice == 'Classification':
                 else: featureset[i] = int(1)
         
             elif i==9:  
-                featureset[i] = featureset[i].astype(int)
+                featureset[i] = featureset[i].astype(float)
 
             elif i==10:
                 if featureset[i] =='Downsloping': featureset[i] = int(0)
@@ -376,11 +375,8 @@ elif nav_choice == 'Classification':
                 elif featureset[i] =='Normal blood flow': featureset[i] = int(1)
                 else: featureset[i] = int(2)
         
-        for i in range(len(featureset)):
-            if i == 9:
-                continue
-            featureset = featureset.astype(int)
-
+       
+        featureset = featureset.astype(float) 
         featureset = featureset_scale(featureset)
 
         prediction = np.argmax(model.predict(featureset),axis=1)
