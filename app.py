@@ -283,49 +283,44 @@ elif nav_choice == 'Data Analysis':
 elif nav_choice == 'Classification':
     
     st.markdown('Kindly hit ENTER after each entry')
-    
+        
     age = st.number_input('Age of the patient',step=1)
 
     Sex  = st.selectbox('Sex of patient',
-                       ('Male','Female'))
+                        ('Male','Female'))
 
     cp = st.selectbox('Chest Pain type chest pain type',
-                       ('Typical Angina','Atypical Angina','Non-Anginal Pain','Asymptomatic') )
+                        ('Typical Angina','Atypical Angina','Non-Anginal Pain','Asymptomatic') )
 
-    trtbps  = st.number_input('Resting blood pressure (in mm Hg)')
+    trtbps  = st.number_input('Resting blood pressure (in mm Hg)',step=1)
 
-    chol  = st.number_input('Cholestoral in mg/dl ')
+    chol  = st.number_input('Cholestoral in mg/dl ',step=1)
 
-    fbs  = st.number_input('Is Fasting blood sugar > 120 mg/dl')
+    fbs  = st.selectbox('Is Fasting blood sugar > 120 mg/dl', options=("Yes","No"))
 
-    rest_ecg = st.number_input('Resting Electrocardiographic Results')
+    rest_ecg = st.number_input('Resting Electrocardiographic Results',step=1)
 
-    thalach  = st.selectbox('Maximum heart rate achieved',
-                            (
-                                'Normal',
-                                'Having ST-T wave abnormality (T wave inversions and/or ST elevation or depression of > 0.05 mV)',
-                                'Showing probable or definite left ventricular hypertrophy by Estes\' criteria'
-                            )
-                            )
+    thalach  = st.number_input('Maximum heart rate achieved',step=1)
+
     exang = st.selectbox('Does exercise induced Angina',
                         ('Yes','No'))
 
-    oldpeak = st.number_input('Enter ST depression induced by exercise relative to rest')
+    oldpeak = st.number_input('Old Peak',step=1)
 
-    slp = st.selectbox('tSlope of the peak exercise ST segment',
+    slp = st.selectbox('Slope of the peak exercise ST segment',
                         (
-                            '0: downsloping',
-                            '1: flat',
-                            '2: upsloping')
+                            'Downsloping',
+                            'Flat',
+                            'Upsloping')
                         )
-    
-    ca = st.selectbox('Number of major vessels',('1','2','3'))
+
+    ca = st.number_input('Number of major vessels',step=1,min_value=1,max_value=3)
     thal = st.selectbox('A blood disorder called thalassemia',
-                         (
-                            'Fixed defect (no blood flow in some part of the heart)',
+                            (
+                            'Fixed defect ',
                             'Normal blood flow',
-                            'Reversible defect (a blood flow is observed but it is not normal)'                           
-                         )
+                            'Reversible defect'                           
+                            )
                         )
 
     submit = st.button('Predict')
@@ -339,6 +334,52 @@ elif nav_choice == 'Classification':
     if submit:
         featureset = [age,Sex,cp,trtbps,chol,fbs,rest_ecg,thalach,exang,oldpeak,slp,ca,thal]
         featureset = np.array(featureset)
+
+        for i in range(len(featureset)):
+            if i==0 or i ==3 or i==4  or i==6 or i==11:
+                featureset[i] = featureset[i].astype(int)
+
+            elif i==1:
+                if featureset[i] == "Male": featureset[i] = int(0)
+                else: featureset[i] = int(1)
+
+            elif i==2:
+                if featureset[i] =='Typical Angina': featureset[i] = int(0)
+                elif featureset[i] =='Atypical Angina': featureset[i] = int(1)
+                elif featureset[i] =='Non-Anginal Pain': featureset[i] = int(2)
+                else: featureset[i] = int(3)
+            elif i == 5:
+                if featureset[i] == "Yes": featureset[i] = int(1)
+                else: featureset[i] = int(0)
+            
+            elif i==7:
+                st.write(featureset[i])
+                featureset[i] = int(float(featureset[i]))
+
+
+            elif i==8:
+                if featureset[i] == "Yes": featureset[i] = int(0)
+                else: featureset[i] = int(1)
+        
+            elif i==9:  
+                featureset[i] = featureset[i].astype(int)
+
+            elif i==10:
+                if featureset[i] =='Downsloping': featureset[i] = int(0)
+                elif featureset[i] =='Flat': featureset[i] = int(1)
+                else: featureset[i] = int(2)
+
+            else:
+                if featureset[i] =='Fixed defect ': 
+                    featureset[i] = int(0)
+                    featureset[i] = featureset[i].astype(int)
+                elif featureset[i] =='Normal blood flow': featureset[i] = int(1)
+                else: featureset[i] = int(2)
+        
+        for i in range(len(featureset)):
+            if i == 9:
+                continue
+            featureset = featureset.astype(int)
 
         featureset = featureset_scale(featureset)
 
