@@ -43,6 +43,7 @@ X1 = X1.to_numpy()
 y1 = np.zeros((y_label.shape[0], (np.amax(y_label)+1)))
 y1[np.arange(y_label.shape[0]), y_label] = 1
 
+# Collecting the mean and standard-deviation data to normalizee input data
 feature_std = []
 feature_mean = []
 for i in range(X_label.shape[1]):
@@ -179,21 +180,19 @@ y_test_pk = np.argmax(y_test, axis=1)
 
 print(model.accuracy_score(y_test_pk, y_pred_pickel))
 
-# Here our training part is completed and now we will move on to web-app development, where data-visualization is
-# also done.
 
-# Part to continue .............................
+# Use of Streamlit to create a web app.
 
 nav_choice = st.sidebar.radio('Navigation', ('Home', 'Data Visualization', 'Classification'), index=0)
 
 if nav_choice == 'Home':
     st.image("./Assets/Cross-section-human-heart.jpg", width=800)
 
-    st.success('Here, for the purpose of prediction, this app uses Linear Regression algorithm − '
-               'one of the classic supervised machine learning algorithms.')
+    st.success('Here, for the purpose of classification, this app uses Multilayer Perceptron − '
+               'one of the classic neural network algorithms.')
 
-    st.warning('For the purpose of prediction, only features given in the table '
-                'below are used. Detailed description about the features is provided within the table.')
+    st.warning('For the purpose of classification, the following features given in the table '
+                'below are used. Detailed description of these features is provided within the table.')
 
     #Readme
     st.markdown('<table>'
@@ -310,7 +309,7 @@ elif nav_choice == 'Data Visualization':
 
     
     def diagnostic_plots(variable,target):
-        # The function takes a dataframe (df) and
+
         sns.set()
         
         # Define figure size.
@@ -348,6 +347,7 @@ elif nav_choice == 'Data Visualization':
     def plot2(variable,target):     
         plt.figure(figsize=(15, 15),facecolor='lightgray')    
         
+        # Area Plot
         reg = pd.crosstab(df[variable],df[target])
         reg.plot(kind = "area",stacked = False, alpha = 0.5, figsize = (20,10))
         plt.title(f"{variable}-Target", fontsize = 20)
@@ -355,6 +355,7 @@ elif nav_choice == 'Data Visualization':
         plt.ylabel(variable, fontsize = 20)
         plt.show()
         
+        # Bar Plot
         reg.plot(kind="bar",figsize=(20,10),color= ['green','red'])
         plt.title(f'Heart Disease Frequency for {variable}')
         plt.xlabel(variable)
