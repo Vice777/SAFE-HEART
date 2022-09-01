@@ -210,17 +210,6 @@ if nav_choice == 'Home':
                     '<td>Sex of the patient</td>'
                 '</tr>'
                 '<tr>'
-                    '<td>exang</td>'
-                    '<td>Exercise induced angina'                        
-                    '<li>1 = yes</li>'
-                        '<li>0 = no</li>'
-                    '</td>'
-                '</tr>'
-                '<tr>'
-                    '<td>ca</td>'
-                    '<td>Number of major vessels (0-3)</td>'
-                '</tr>'
-                '<tr>'
                     '<td>cp </td>'
                     '<td>Chest Pain type chest pain type:'
                         '<ul>'
@@ -248,7 +237,7 @@ if nav_choice == 'Home':
                     '</td>'
                 '</tr>'
                 '<tr>'
-                    '<td>Trades</td>'
+                    '<td>restecg</td>'
                     '<td>'
                         '<ol>'
                             '<li>Value 0: Normal</li>'
@@ -260,6 +249,37 @@ if nav_choice == 'Home':
                 '<tr>'
                     '<td>thalach </td>'
                     '<td>Maximum Heart Rate achieved</td>'
+                '</tr>'
+                '<tr>'
+                    '<td>exang</td>'
+                    '<td>Exercise induced angina'                        
+                    '<li>1 = yes</li>'
+                        '<li>0 = no</li>'
+                    '</td>'
+                '</tr>'
+                '<tr>'
+                    '<td>Oldpeak</td>' 
+                    '<td>ST depression induced by exercise relative to rest </td>'
+                '</tr>'
+                '<tr>'
+                    '<td>slp </td>'
+                    '<td>Peak exercise ST segment Slop'
+                        '<li> 0 = Downsloping</li>'
+                        '<li> 1 = Flat</li>'
+                        '<li> 2 = Upsloping</li>'
+                    '</td>'
+                '</tr>'
+                '<tr>'
+                    '<td>caa</td>' 
+                    '<td>The number of major vessels (0–3)</td>'
+                '</tr>'
+                '<tr>'
+                    '<td>thall </td>'
+                    '<td>A blood disorder called Thalassemia'
+                        '<li> Value 1: fixed defect (no blood flow in some part of the heart)</li>'
+                        '<li> Value 2: normal blood flow</li>'
+                        '<li> Value 3: reversible defect (a blood flow is observed but it is not normal)</li>'
+                    '</td>'
                 '</tr>'
                 '<tr>'
                     '<td>target </td>'
@@ -279,7 +299,16 @@ if nav_choice == 'Home':
 
 elif nav_choice == 'Data Visualization':
     
-    plot_choice = st.selectbox('Plots', (''), index=0)
+    plot_choice = st.selectbox('Plots', ('Age vs Output', 'Sex vs Output',
+                                         'Chest Pain Types vs Output', 'Resting Blood Pressure  vs Output',
+                                         'Cholestoral  vs Output', 'Fasting blood sugar vs Output',
+                                         'Resting Electrocardiographic Results vs Output', 
+                                         'Maximum Heart Rate achieved vs Output',
+                                         'Old Peak vs Output', 'Slope vs Output',
+                                         'The Number of Major Vessels vs Output', 'Thalassemia vs Output'
+                                         ), index=0)
+
+    
     def diagnostic_plots(variable,target):
         # The function takes a dataframe (df) and
         sns.set()
@@ -314,26 +343,85 @@ elif nav_choice == 'Data Visualization':
         plt.title('Barplot')
         
         
-        plt.show()
-        
+        st.pyplot()
+    
+    def plot2(variable,target):     
         plt.figure(figsize=(15, 15),facecolor='lightgray')    
         
         reg = pd.crosstab(df[variable],df[target])
         reg.plot(kind = "area",stacked = False, alpha = 0.5, figsize = (20,10))
-        plt.title("Variable-Target", fontsize = 20)
+        plt.title(f"{variable}-Target", fontsize = 20)
         plt.xlabel(target, fontsize = 20)
         plt.ylabel(variable, fontsize = 20)
         plt.show()
         
         reg.plot(kind="bar",figsize=(20,10),color= ['green','red'])
-        plt.title('Heart Disease Frequency for Ages')
-        plt.xlabel('Age')
+        plt.title(f'Heart Disease Frequency for {variable}')
+        plt.xlabel(variable)
         plt.ylabel('Frequency')
         plt.show()
     
+    submit = st.button('Show')
     
-    exit()
+
+    load = st.progress(0)
+    style.use('ggplot')
+
+    if plot_choice == 'Age vs Output':
+        diagnostic_plots('age','output')
+        plot2('age','output')
+
+    elif plot_choice == 'Sex vs Output':
+        diagnostic_plots('sex','output')
+        plot2('sex','output')
+
+    elif plot_choice == 'Chest Pain Types vs Output':
+        diagnostic_plots('cp','output')
+        plot2('cp','output')
     
+    elif plot_choice == 'Resting Blood Pressure  vs Output':
+        diagnostic_plots('trtbps','output')
+        plot2('trtbps','output')
+
+    elif plot_choice == 'Cholestoral  vs Output':
+        diagnostic_plots('chol','output')
+        #plot2('chol','output')
+
+    elif plot_choice == 'Fasting blood sugar vs Output':
+        #diagnostic_plots('fbs','output')
+        plot2('fbs','output')
+
+    elif plot_choice == 'Resting Electrocardiographic Results vs Output' :
+        #diagnostic_plots('restecg','output')
+        plot2('restecg','output')
+
+    elif plot_choice == 'Maximum Heart Rate achieved vs Output':
+        diagnostic_plots('thalachh','output')
+        plot2('thalachh','output')
+
+    elif plot_choice == 'Old Peak vs Output':
+        diagnostic_plots('oldpeak','output')
+        plot2('oldpeak','output')
+
+    elif plot_choice == 'Slope vs Output':
+        diagnostic_plots('slp','output')
+        plot2('slp','output')
+
+    elif plot_choice == 'The Number of Major Vessels vs Output':
+        diagnostic_plots('caa','output')
+        plot2('caa','output')
+
+    elif plot_choice == 'Thalassemia vs Output':
+        diagnostic_plots('thall','output')
+        plot2('thall','output')
+
+    
+    
+    for i in range(100):
+        time.sleep(0.001)
+        load.progress(i + 1)
+
+
 elif nav_choice == 'Classification':
     
     st.markdown('Kindly hit ENTER after each entry')
