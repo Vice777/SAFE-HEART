@@ -277,7 +277,61 @@ if nav_choice == 'Home':
                 , unsafe_allow_html=True)
 
 
-elif nav_choice == 'Data Analysis':
+elif nav_choice == 'Data Visualization':
+    
+    plot_choice = st.selectbox('Plots', (''), index=0)
+    def diagnostic_plots(variable,target):
+        # The function takes a dataframe (df) and
+        sns.set()
+        
+        # Define figure size.
+        plt.figure(figsize=(20, 20),facecolor='lightgray')
+        
+        # histogram
+        plt.subplot(221)
+        sns.histplot(x=df[variable], hue=df[target],kde=True,palette="YlOrBr")
+        plt.legend(['Female','Male'])
+        plt.title('Histogram')
+
+
+        # scatterplot
+        plt.subplot(222)
+        sns.scatterplot(x=df[variable],y=df[target],hue=df['sex'],palette="mako")
+        plt.legend(['Female','Male'])
+        plt.title('Scatterplot')
+        
+        
+        # boxplot
+        plt.subplot(223)
+        sns.boxplot(y=df[variable],x=df[target],hue=df['sex'],palette="mako")
+        plt.legend(['Female','Male'])
+        plt.title('Boxplot')
+        
+        # barplot
+        plt.subplot(224)
+        sns.barplot(x = df[target], y= df[variable], hue= df['sex'], palette= "flare")   
+        plt.legend(['Female','Male'])
+        plt.title('Barplot')
+        
+        
+        plt.show()
+        
+        plt.figure(figsize=(15, 15),facecolor='lightgray')    
+        
+        reg = pd.crosstab(df[variable],df[target])
+        reg.plot(kind = "area",stacked = False, alpha = 0.5, figsize = (20,10))
+        plt.title("Variable-Target", fontsize = 20)
+        plt.xlabel(target, fontsize = 20)
+        plt.ylabel(variable, fontsize = 20)
+        plt.show()
+        
+        reg.plot(kind="bar",figsize=(20,10),color= ['green','red'])
+        plt.title('Heart Disease Frequency for Ages')
+        plt.xlabel('Age')
+        plt.ylabel('Frequency')
+        plt.show()
+    
+    
     exit()
     
 elif nav_choice == 'Classification':
@@ -379,10 +433,15 @@ elif nav_choice == 'Classification':
         featureset = featureset.astype(float) 
         featureset = featureset_scale(featureset)
 
-        prediction = np.argmax(model.predict(featureset),axis=1)
+        classification = np.argmax(model.predict(featureset),axis=1)
+        if classification == 0:
+            classification = "Safe-Healthy Heart -> Low chances of heart Attack"
+        else:
+            classification = "Unhealthy Heart -> High chances of heart Attack"
+
         
         load = st.progress(0)
         for i in range(100):
             time.sleep(0.00001)
             load.progress(i + 1)
-        st.success(f'Heart Rate classification : {prediction}')
+        st.success(f'Heart Rate classification : {classification}')
