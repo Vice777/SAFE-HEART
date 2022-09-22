@@ -4,7 +4,7 @@ LINK : https://vice777-safe-heart-classifier-multilayer-perceptron--app-idf5su.s
 ___
 <a href="url"><img src="https://i.pinimg.com/originals/3d/e3/a6/3de3a6cae7d628ad1ae7b6d03a4cd649.gif" align="right" height="240" width="240" ></a>
 
-## Decription:<br>
+## Description:<br>
 Classify the chances of having a Heart Attack based on your Heart's Condition.<br>
 In this end-to-end Machine Learning project-tutorial, I have created and trained Multi-Layer model from scratch, using NumPy.<br>
 Furthermore, the model with the best accuracy is embedded in the web-app developed using streamlit module for the purpose of classification of your Heart's Condition.   <br>
